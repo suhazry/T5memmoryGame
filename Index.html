@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Frost RBT - Tenaga Boleh Baharu (Tahun 5)</title>
+  <style>
+    /* ==========================================================================
+       REKA BENTUK CSS & TEMA FUTURISTIK ICE (BIRU & PUTIH)
+       ========================================================================== */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&display=swap');
+
+    :root {
+      --ice-primary: #00d2ff;
+      --ice-glow: #80e5ff;
+      --ice-dark: #005c8a;
+      --ice-deep-bg: #030a16;
+      --panel-bg: rgba(6, 20, 41, 0.93);
+      --card-back-bg: #091a33;
+      --text-white: #ffffff;
+      --text-cyan: #a3f2ff;
+      --alert-red: #ff3366;
+      --warning-yellow: #ffcc00;
+      --success-green: #00ffaa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Rajdhani', sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--ice-deep-bg);
+      color: var(--text-white);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      background-image: 
+        radial-gradient(circle at 50% 20%, rgba(0, 210, 255, 0.25) 0%, transparent 70%),
+        linear-gradient(rgba(0, 210, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 210, 255, 0.08) 1px, transparent 1px);
+      background-size: 100% 100%, 30px 30px, 30px 30px;
+    }
+
+    /* Container Utama Frame Ais Futuristik */
+    .game-container {
+      background: var(--panel-bg);
+      border: 2px solid var(--ice-primary);
+      box-shadow: 0 0 35px rgba(0, 210, 255, 0.4), inset 0 0 20px rgba(0, 210, 255, 0.15);
+      border-radius: 20px;
+      padding: 22px;
+      width: 100%;
+      max-width: 850px;
+      text-align: center;
+      position: relative;
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    /* Header Panel */
+    .header-panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid rgba(0, 210, 255, 0.3);
+      padding-bottom: 12px;
+      margin-bottom: 15px;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      text-align: left;
+    }
+
+    .school-logo {
+      width: 65px;
+      height: 65px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px var(--ice-glow));
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      padding: 3px;
+      border: 1px solid var(--ice-primary);
+    }
+
+    .brand-title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--ice-glow);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(0, 210, 255, 0.6);
+    }
+
+    .brand-subtitle {
+      font-size: 14px;
+      color: var(--text-cyan);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* Robot Transformer & Pentas Pembekuan */
+    .robot-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 10px 0 18px 0;
+      background: rgba(2, 10, 24, 0.6);
+      border: 1px solid rgba(0, 210, 255, 0.2);
+      border-radius: 15px;
+      padding: 12px 20px;
+    }
+
+    .robot-wrapper {
+      position: relative;
+      width: 110px;
+      height: 140px;
+      flex-shrink: 0;
+    }
+
+    .robot-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 12px var(--ice-primary));
+      transition: filter 0.5s ease;
+    }
+
+    /* Lapisan Ais Pembekuan Berperingkat daripada Kaki ke Kepala */
+    .ice-freeze-mask-layer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 0%; /* Kawalan Dinamik JS dari 0% ke 100% */
+      background: linear-gradient(to top, 
+        rgba(180, 245, 255, 0.95) 0%, 
+        rgba(0, 210, 255, 0.8) 50%, 
+        rgba(255, 255, 255, 0.6) 85%, 
+        transparent 100%);
+      mix-blend-mode: hard-light;
+      pointer-events: none;
+      transition: height 0.8s linear;
+      border-top: 3px solid var(--text-white);
+      box-shadow: 0 -5px 15px var(--ice-glow);
+      overflow: hidden;
+    }
+
+    .ice-crystals {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.4) 0px, rgba(255,255,255,0.4) 4px, transparent 4px, transparent 8px);
+    }
+
+    .robot-dialog {
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid var(--ice-primary);
+      border-radius: 12px;
+      padding: 12px 18px;
+      color: var(--text-cyan);
+      font-size: 14px;
+      font-weight: 600;
+      position: relative;
+      max-width: 440px;
+      text-align: left;
+      box-shadow: 0 0 12px rgba(0, 210, 255, 0.2);
+    }
+
+    .robot-dialog::before {
+      content: '';
+      position: absolute;
+      left: -9px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent var(--ice-primary) transparent transparent;
+    }
+
+    /* Form Setup Box */
+    .form-box {
+      background: rgba(4, 12, 26, 0.9);
+      border: 1px solid rgba(0, 210, 255, 0.4);
+      border-radius: 14px;
+      padding: 25px;
+      max-width: 450px;
+      margin: 0 auto;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      color: var(--ice-glow);
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px;
+      background: #020712;
+      border: 1px solid var(--ice-primary);
+      color: #fff;
+      font-size: 16px;
+      border-radius: 8px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      border-color: var(--text-white);
+      box-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
+    }
+
+    /* Buttons */
+    .btn-cyber {
+      background: linear-gradient(135deg, var(--ice-primary), var(--ice-dark));
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .btn-cyber:hover {
+      background: linear-gradient(135deg, var(--ice-glow), var(--ice-primary));
+      box-shadow: 0 0 25px rgba(0, 210, 255, 0.8);
+      transform: translateY(-2deg);
+    }
+
+    .audio-btn {
+      background: transparent;
+      border: 1px solid var(--ice-primary);
+      color: var(--ice-glow);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #020814;
+      border: 1px solid var(--ice-primary);
+      border-radius: 10px;
+      padding: 12px 20px;
+      margin-bottom: 20px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-family: 'Orbitron', sans-serif;
+      color: var(--text-cyan);
+    }
+
+    .stat-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ice-glow);
+    }
+
+    .timer-critical {
+      color: var(--alert-red) !important;
+      animation: pulseAlert 0.5s infinite alternate;
+    }
+
+    @keyframes pulseAlert {
+      0% { text-shadow: 0 0 5px var(--alert-red); }
+      100% { text-shadow: 0 0 20px var(--alert-red); }
+    }
+
+    /* Card Grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      perspective: 1000px;
+    }
+
+    @media (max-width: 650px) {
+      .card-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+    }
+
+    /* Memory Card Element */
+    .card {
+      height: 110px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card.matched .card-back {
+      border-color: var(--success-green);
+      box-shadow: 0 0 15px rgba(0, 255, 170, 0.6);
+      background: #02241b;
+      color: #ffffff;
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .card-front {
+      background: linear-gradient(135deg, #091a33, #020814);
+      border: 2px solid var(--ice-primary);
+      box-shadow: inset 0 0 12px rgba(0, 210, 255, 0.3);
+    }
+
+    .card-front::after {
+      content: '⚡RBT';
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--ice-glow);
+      text-shadow: 0 0 8px var(--ice-primary);
+    }
+
+    .card-back {
+      background: #ffffff;
+      color: #020814;
+      transform: rotateY(180deg);
+      border: 2px solid var(--ice-glow);
+      box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+    }
+
+    .card-img {
+      max-width: 90%;
+      max-height: 70px;
+      object-fit: contain;
+    }
+
+    .card-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: #020814;
+      line-height: 1.2;
+    }
+
+    .card.matched .card-text {
+      color: #ffffff;
+    }
+
+    .svg-dummy {
+      width: 48px;
+      height: 48px;
+    }
+
+    /* Pop-up Mini Menu Modal */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(2, 6, 16, 0.88);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-box {
+      background: var(--panel-bg);
+      border: 2px solid var(--alert-red);
+      box-shadow: 0 0 30px rgba(255, 51, 102, 0.5);
+      border-radius: 16px;
+      padding: 25px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .modal-box h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--alert-red);
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: var(--text-cyan);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--alert-red);
+      color: var(--alert-red);
+      font-family: 'Orbitron', sans-serif;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 50%;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 51, 102, 0.2);
+    }
+
+    .score-badge {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 38px;
+      font-weight: 900;
+      color: var(--ice-glow);
+      text-shadow: 0 0 20px rgba(0, 210, 255, 0.8);
+      margin: 15px 0;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <div class="game-container">
+    <!-- Header Utama (Panitia RBT & Logo) -->
+    <div class="header-panel">
+      <div class="brand-section">
+        <img id="school-logo-img" src="logo.png" alt="SK Taman Molek" class="school-logo" onerror="handleLogoError(this)">
+        <div>
+          <div class="brand-title">PANITIA RBT SK TAMAN MOLEK</div>
+          <div class="brand-subtitle">Tahun 5: Tenaga Boleh Baharu</div>
+        </div>
+      </div>
+      <button id="sound-toggle" class="audio-btn" onclick="toggleAudio()">🔊 BUNYI: ON</button>
+    </div>
+
+    <!-- MASKOT ROBOT TRANSFORMER FUTURISTIK & LAYER PEMBEKUAN -->
+    <div class="robot-stage">
+      <div class="robot-wrapper">
+        <svg id="robot-svg" class="robot-svg" viewBox="0 0 100 130">
+          <line x1="50" y1="18" x2="50" y2="4" stroke="#00d2ff" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="50" cy="4" r="4" fill="#80e5ff"/>
+          
+          <!-- Kepala Transformer -->
+          <polygon points="25,18 75,18 85,42 75,60 25,60 15,42" fill="#091a33" stroke="#00d2ff" stroke-width="2.5"/>
+          <rect x="30" y="28" width="40" height="14" rx="4" fill="#020814" stroke="#80e5ff" stroke-width="1.5"/>
+          <circle id="robot-eye-left" cx="40" cy="35" r="4" fill="#00d2ff"/>
+          <circle id="robot-eye-right" cx="60" cy="35" r="4" fill="#00d2ff"/>
+          <path d="M 38 48 L 62 48" stroke="#00d2ff" stroke-width="2.5" stroke-linecap="round"/>
+          
+          <!-- Bahu & Dada (Torso) -->
+          <polygon points="15,62 85,62 95,85 75,100 25,100 5,85" fill="#041226" stroke="#00d2ff" stroke-width="2.5"/>
+          <polygon points="50,68 62,78 50,88 38,78" fill="#80e5ff"/>
+
+          <!-- Kaki Robot (Sisi Bawah) -->
+          <rect x="22" y="100" width="18" height="28" rx="4" fill="#08182d" stroke="#00d2ff" stroke-width="2"/>
+          <rect x="60" y="100" width="18" height="28" rx="4" fill="#08182d" stroke="#00d2ff" stroke-width="2"/>
+          <path d="M 16 122 L 42 122 L 44 128 L 14 128 Z" fill="#00d2ff"/>
+          <path d="M 58 122 L 84 122 L 86 128 L 56 128 Z" fill="#00d2ff"/>
+        </svg>
+
+        <!-- Dynamic Ice Layer Mask: Membeku Dari Kaki (0%) Hingga Ke Kepala (100%) -->
+        <div id="ice-freeze-layer" class="ice-freeze-mask-layer">
+          <div class="ice-crystals"></div>
+        </div>
+      </div>
+
+      <div class="robot-dialog" id="robot-speech">
+        Salam Cyber RBT! Saya Robot Frost-5. Sila daftarkan Nama dan Kelas anda untuk menyahbekukan sumber Tenaga Boleh Baharu sebelum saya membeku sepenuhnya!
+      </div>
+    </div>
+
+    <!-- SKRIN 1: PENDAFTARAN -->
+    <div id="setup-screen" class="form-box">
+      <div class="input-group">
+        <label for="nama">NAMA PEMAIN</label>
+        <input type="text" id="nama" placeholder="Masukkan Nama Penuh..." autocomplete="off">
+      </div>
+      <div class="input-group">
+        <label for="kelas">KELAS</label>
+        <input type="text" id="kelas" placeholder="Contoh: 5A1" autocomplete="off">
+      </div>
+      <button class="btn-cyber" onclick="startGame()">MULA PERMAINAN 🚀</button>
+    </div>
+
+    <!-- SKRIN 2: PERMAINAN (CARD GRID) -->
+    <div id="game-screen" class="hidden">
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-label">PEMAIN</span>
+          <span class="stat-value" id="display-nama">-</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">KELAS</span>
+          <span class="stat-value" id="display-kelas" style="color:var(--text-cyan);">-</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">MASA MENGUNDUR</span>
+          <span class="stat-value" id="timer">120s</span>
+        </div>
+      </div>
+      <div class="card-grid" id="board"></div>
+    </div>
+
+    <!-- POP-UP MINI MENU (BILA MASA TAMAT) -->
+    <div id="timeout-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h3>⚠️ MASA TELAH TAMAT!</h3>
+        <p>Robot Transformer telah membeku sepenuhnya dari kaki ke kepala! Adakah anda ingin meneruskan cabaran?</p>
+        <div class="modal-actions">
+          <button class="btn-secondary" onclick="quitGame()">QUIT / MAIN SEMULA</button>
+          <button class="btn-cyber" style="width: 50%; font-size: 12px;" onclick="continueGame()">TERUSKAN (+30s)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SKRIN 3: TAMAT PERMAINAN & SKOR -->
+    <div id="end-screen" class="hidden">
+      <h2 style="font-family:'Orbitron'; color:var(--ice-glow); letter-spacing:2px;">MISI SELESAI! TAHNIAH!</h2>
+      <p style="color:var(--text-cyan); margin-top:5px;">Masa Diambil / Rekod Baki Masa:</p>
+      <div class="score-badge" id="final-score-display">0 SAAT</div>
+      <p id="status-msg" style="color: var(--text-cyan); font-size: 14px; margin-bottom: 20px;">Menghantar rekod ke Google Sheets...</p>
+      <button class="btn-cyber" onclick="resetToSetup()" style="max-width: 300px; margin: 0 auto;">MAIN SEMULA 🔄</button>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       BLOK 1: TETAPAN & CONFIGURASI UTAMA (UBAH URL, PEMASA & NAMA IMEJ DI SINI)
+       ========================================================================== */
+    const CONFIG = {
+      // 1. Pemasa Game Utama (Saat) -> Boleh ubah dari 120 ke 125, 150 dsb.
+      TOTAL_TIME: 120,
+
+      // 2. Pautan Web App Google Sheets (Google Apps Script URL)
+      SCRIPT_URL: "MASUKKAN_URL_GOOGLE_APPS_SCRIPT_ANDA_DI_SINI",
+
+      // 3. Nama / Path Fail Logo Sekolah
+      LOGO_URL: "logo.png",
+
+      // 4. Senarai 6 Pasangan Fail Gambar & Jawapan (Tahun 5: Tenaga Boleh Baharu)
+      PAIRS: [
+        {
+          id: "ombak",
+          img1: "Wave.png",
+          img2: "Ombak.png",
+          label: "Ombak",
+          svg1: `<svg class="svg-dummy" viewBox="0 0 100 100"><path d="M10 50 Q 25 30 40 50 T 70 50 T 100 50" fill="none" stroke="#00d2ff" stroke-width="8"/></svg>`,
+          svg2: `<svg class="svg-dummy" viewBox="0 0 100 100"><text x="50%" y="55%" text-anchor="middle" fill="#00d2ff" font-weight="bold" font-size="20">OMBAK</text></svg>`
+        },
+        {
+          id: "kincir",
+          img1: "Wind.png",
+          img2: "Kincir.png",
+          label: "Kincir Angin",
+          svg1: `<svg class="svg-dummy" viewBox="0 0 100 100"><circle cx="50" cy="50" r="10" fill="#00d2ff"/><path d="M50 50 L50 10 M50 50 L85 70 M50 50 L15 70" stroke="#00d2ff" stroke-width="6"/></svg>`,
+          svg2: `<svg class="svg-dummy" viewBox="0 0 100 100"><text x="50%" y="55%" text-anchor="middle" fill="#00d2ff" font-weight="bold" font-size="18">KINCIR</text></svg>`
+        },
+        {
+          id: "solar",
+          img1: "Sun.png",
+          img2: "Solar.png",
+          label: "Matahari / Solar",
+          svg1: `<svg class="svg-dummy" viewBox="0 0 100 100"><circle cx="50" cy="50" r="22" fill="#ffcc00"/><path d="M50 10 L50 20 M50 80 L50 90 M10 50 L20 50 M80 50 L90 50" stroke="#ffcc00" stroke-width="6"/></svg>`,
+          svg2: `<svg class="svg-dummy" viewBox="0 0 100 100"><text x="50%" y="55%" text-anchor="middle" fill="#00d2ff" font-weight="bold" font-size="20">SOLAR</text></svg>`
+        },
+        {
+          id: "hidro",
+          img1: "Water.png",
+          img2: "Hidro.png",
+          label: "Air / Hidro",
+          svg1: `<svg class="svg-dummy" viewBox="0 0 100 100"><path d="M50 15 C50 15 20 55 20 70 C20 85 33 90 50 90 C67 90 80 85 80 70 C80 55 50 15 50 15 Z" fill="#00d2ff"/></svg>`,
+          svg2: `<svg class="svg-dummy" viewBox="0 0 100 100"><text x="50%" y="55%" text-anchor="middle" fill="#00d2ff" font-weight="bold" font-size="20">HIDRO</text></svg>`
+        },
+        {
+          id: "geoterma",
+          img1: "Geoterma.png",
+          img2: "Haba.png",
+          label: "Geoterma / Haba",
+          svg1: `<svg class="svg-dummy" viewBox="0 0 100 100"><path d="M20 80 C40 40 60 90 80 50" fill="none" stroke="#ff3366" stroke-width="8"/></svg>`,
+          svg2: `<svg class="svg-dummy" viewBox="0 0 100 100"><text x="50%" y="55%" text-anchor="middle" fill="#00d2ff" font-weight="bold" font-size="18">GEOTERMA</text></svg>`
+        },
+        {
+          id: "biomass",
+          img1: "Reputan.png",
+          img2: "Biomass.png",
+          label: "Biojisim / Reputan",
+          svg1: `<svg class="svg-dummy" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="#00ffaa"/><path d="M40 35 L60 65 M60 35 L40 65" stroke="#020814" stroke-width="5"/></svg>`,
+          svg2: `<svg class="svg-dummy" viewBox="0 0 100 100"><text x="50%" y="55%" text-anchor="middle" fill="#00d2ff" font-weight="bold" font-size="16">BIOMASS</text></svg>`
+        }
+      ]
+    };
+
+    /* ==========================================================================
+       BLOK 2: PEMBOLEH UBAH GLOBAL & STATE PERMAINAN
+       ========================================================================== */
+    let playerName = "";
+    let playerClass = "";
+    let firstCard = null, secondCard = null;
+    let lockBoard = false;
+    let timerInterval = null;
+    let timeRemaining = CONFIG.TOTAL_TIME;
+    let timeElapsed = 0;
+    let matchesCount = 0;
+    const TOTAL_PAIRS_COUNT = CONFIG.PAIRS.length;
+    let soundEnabled = true;
+
+    function handleLogoError(imgEl) {
+      imgEl.onerror = null;
+      imgEl.style.display = 'none';
+    }
+
+    /* ==========================================================================
+       BLOK 3: ENJIN AUDIO SYNTHESIZER FUTURISTIK (WEB AUDIO API)
+       ========================================================================== */
+    let audioCtx = null;
+
+    function initAudio() {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      } catch (e) {
+        console.log("Audio Init Warning:", e);
+      }
+    }
+
+    function toggleAudio() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('sound-toggle').innerText = soundEnabled ? "🔊 BUNYI: ON" : "🔇 BUNYI: OFF";
+    }
+
+    function playFuturisticSound(type) {
+      if (!soundEnabled) return;
+      initAudio();
+      if (!audioCtx) return;
+
+      try {
+        const now = audioCtx.currentTime;
+
+        if (type === 'flip') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(400, now);
+          osc.frequency.exponentialRampToValueAtTime(900, now + 0.08);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } 
+        else if (type === 'correct') {
+          const freqs = [523.25, 659.25, 783.99, 1046.50];
+          freqs.forEach((f, i) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'triangle';
+            o.frequency.setValueAtTime(f, now + i * 0.07);
+            g.gain.setValueAtTime(0.18, now + i * 0.07);
+            g.gain.linearRampToValueAtTime(0.01, now + i * 0.07 + 0.12);
+            o.start(now + i * 0.07);
+            o.stop(now + i * 0.07 + 0.12);
+          });
+        } 
+        else if (type === 'wrong') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(240, now);
+          osc.frequency.linearRampToValueAtTime(120, now + 0.22);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.22);
+          osc.start(now);
+          osc.stop(now + 0.22);
+        } 
+        else if (type === 'alarm20') {
+          [0, 0.15].forEach(delay => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'sine';
+            o.frequency.setValueAtTime(880, now + delay);
+            o.frequency.exponentialRampToValueAtTime(440, now + delay + 0.12);
+            g.gain.setValueAtTime(0.25, now + delay);
+            g.gain.linearRampToValueAtTime(0.01, now + delay + 0.12);
+            o.start(now + delay);
+            o.stop(now + delay + 0.12);
+          });
+        }
+        else if (type === 'win') {
+          const notes = [440, 554.37, 659.25, 880, 1108.73];
+          notes.forEach((f, i) => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'square';
+            o.frequency.setValueAtTime(f, now + i * 0.09);
+            g.gain.setValueAtTime(0.15, now + i * 0.09);
+            g.gain.linearRampToValueAtTime(0.01, now + i * 0.09 + 0.2);
+            o.start(now + i * 0.09);
+            o.stop(now + i * 0.09 + 0.2);
+          });
+        }
+      } catch (e) {
+        console.log("Audio Playback Warning:", e);
+      }
+    }
+
+    /* ==========================================================================
+       BLOK 4: ALIRAN PERMAINAN & PERALIHAN SKRIN CALIS RALAT (startGame)
+       ========================================================================== */
+    function setRobotSpeech(text) {
+      document.getElementById('robot-speech').innerText = text;
+    }
+
+    function startGame() {
+      const namaInput = document.getElementById('nama').value.trim();
+      const kelasInput = document.getElementById('kelas').value.trim();
+
+      if (!namaInput || !kelasInput) {
+        setRobotSpeech("Ops! Sila masukkan Nama Penuh dan Kelas terlebih dahulu!");
+        alert("Sila masukkan Nama Pemain dan Kelas!");
+        return;
+      }
+
+      playerName = namaInput;
+      playerClass = kelasInput;
+
+      // Inisialisasi audio
+      initAudio();
+
+      // Kemaskini Paparan
+      document.getElementById('display-nama').innerText = playerName;
+      document.getElementById('display-kelas').innerText = playerClass;
+
+      // PERALIHAN PAPARAN DIJAMIN 100% BERFUNGSI
+      document.getElementById('setup-screen').classList.add('hidden');
+      document.getElementById('timeout-modal').classList.add('hidden');
+      document.getElementById('end-screen').classList.add('hidden');
+      document.getElementById('game-screen').classList.remove('hidden');
+
+      setRobotSpeech(`Hebat, ${playerName}! Padankan 6 pasangan Tenaga Boleh Baharu sebelum robot membeku dari kaki ke kepala!`);
+
+      // Mula Pemasa Asal daripada CONFIG
+      timeRemaining = CONFIG.TOTAL_TIME;
+      timeElapsed = 0;
+      updateFreezeVisuals();
+      initBoard();
+      startTimer();
+    }
+
+    /* ==========================================================================
+       BLOK 5: PEMASA MENGUNDUR & ANIMASI PEMBEKUAN ROBOT (DARIPADA KAKI KE KEPALA)
+       ========================================================================== */
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      
+      const timerEl = document.getElementById('timer');
+      timerEl.innerText = timeRemaining + "s";
+      timerEl.classList.remove('timer-critical');
+
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        timeElapsed++;
+
+        timerEl.innerText = timeRemaining + "s";
+
+        // Mesej amaran apabila baki masa <= 20s
+        if (timeRemaining <= 20) {
+          timerEl.classList.add('timer-critical');
+        }
+
+        // Alarm setiap 20 saat pengurangan masa
+        if (timeRemaining > 0 && timeRemaining < CONFIG.TOTAL_TIME && timeRemaining % 20 === 0) {
+          playFuturisticSound('alarm20');
+          setRobotSpeech(`⚠️ ALAM INGATAN: Baki masa tinggal ${timeRemaining} saat sahaja lagi!`);
+        }
+
+        // Kemaskini Animasi Pembekuan Ais dari Kaki ke Kepala
+        updateFreezeVisuals();
+
+        // Jika Masa Tamat (0s)
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          handleTimeOut();
+        }
+      }, 1000);
+    }
+
+    function updateFreezeVisuals() {
+      // Peratusan Pembekuan: 0% (kaki) pada awal, 100% (kepala) pada akhir
+      const freezePercent = Math.min(100, Math.max(0, ((CONFIG.TOTAL_TIME - timeRemaining) / CONFIG.TOTAL_TIME) * 100));
+      
+      const iceLayer = document.getElementById('ice-freeze-layer');
+      const robotSvg = document.getElementById('robot-svg');
+
+      // Ketinggian Lapisan Pembekuan dinaikkan dari Bawah ke Atas
+      iceLayer.style.height = freezePercent + '%';
+
+      const leftEye = document.getElementById('robot-eye-left');
+      const rightEye = document.getElementById('robot-eye-right');
+      
+      if (timeRemaining <= 20) {
+        leftEye.setAttribute('fill', '#ff3366');
+        rightEye.setAttribute('fill', '#ff3366');
+        robotSvg.style.filter = 'drop-shadow(0 0 15px rgba(255, 51, 102, 0.8))';
+      } else {
+        leftEye.setAttribute('fill', '#00d2ff');
+        rightEye.setAttribute('fill', '#00d2ff');
+        robotSvg.style.filter = 'drop-shadow(0 0 12px var(--ice-primary))';
+      }
+    }
+
+    function handleTimeOut() {
+      playFuturisticSound('wrong');
+      setRobotSpeech("AMARAN: Suhu pembekuan maksimum dicapai! Robot telah terhenti membeku sepenuhnya dari kaki hingga ke kepala!");
+      document.getElementById('timeout-modal').classList.remove('hidden');
+    }
+
+    function continueGame() {
+      document.getElementById('timeout-modal').classList.add('hidden');
+      timeRemaining = 30; // Masa Tambahan +30s
+      setRobotSpeech("Sistem dinyahbeku sementara! Tambahan 30 saat diberikan!");
+      startTimer();
+    }
+
+    function quitGame() {
+      document.getElementById('timeout-modal').classList.add('hidden');
+      resetToSetup();
+    }
+
+    /* ==========================================================================
+       BLOK 6: LOGIK PAPAN MEMORI & PADANAN KAD
+       ========================================================================== */
+    function initBoard() {
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      matchesCount = 0;
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+
+      let deck = [];
+
+      // Membentuk Pasangan Kad mengikut Konfigurasi (Gambar 1 vs Gambar 2)
+      CONFIG.PAIRS.forEach(pair => {
+        deck.push({
+          id: pair.id,
+          content: `<img src="${pair.img1}" class="card-img" alt="${pair.label}" onerror="this.onerror=null; this.parentElement.innerHTML='${pair.svg1}';"><span style="font-size:10px;color:#00d2ff;">${pair.img1}</span>`
+        });
+        deck.push({
+          id: pair.id,
+          content: `<img src="${pair.img2}" class="card-img" alt="${pair.label}" onerror="this.onerror=null; this.parentElement.innerHTML='${pair.svg2}';"><span style="font-size:10px;color:#00d2ff;">${pair.img2}</span>`
+        });
+      });
+
+      // Rawakkan kad
+      deck.sort(() => 0.5 - Math.random());
+
+      deck.forEach(data => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.dataset.id = data.id;
+
+        card.innerHTML = `
+          <div class="card-face card-front"></div>
+          <div class="card-face card-back">${data.content}</div>
+        `;
+
+        card.addEventListener('click', flipCard);
+        board.appendChild(card);
+      });
+    }
+
+    function flipCard() {
+      if (lockBoard || this === firstCard || this.classList.contains('matched')) return;
+
+      playFuturisticSound('flip');
+      this.classList.add('flipped');
+
+      if (!firstCard) {
+        firstCard = this;
+        return;
+      }
+
+      secondCard = this;
+      checkForMatch();
+    }
+
+    function checkForMatch() {
+      let isMatch = firstCard.dataset.id === secondCard.dataset.id;
+      if (isMatch) {
+        disableCards();
+      } else {
+        unflipCards();
+      }
+    }
+
+    function disableCards() {
+      playFuturisticSound('correct');
+      firstCard.classList.add('matched');
+      secondCard.classList.add('matched');
+
+      firstCard.removeEventListener('click', flipCard);
+      secondCard.removeEventListener('click', flipCard);
+
+      resetBoardState();
+      matchesCount++;
+
+      setRobotSpeech("Syabas! Padanan Tenaga Boleh Baharu yang betul!");
+
+      if (matchesCount === TOTAL_PAIRS_COUNT) {
+        clearInterval(timerInterval);
+        endGame();
+      }
+    }
+
+    function unflipCards() {
+      lockBoard = true;
+      playFuturisticSound('wrong');
+      setRobotSpeech("Padanan kurang tepat, cuba lagi!");
+
+      setTimeout(() => {
+        if (firstCard) firstCard.classList.remove('flipped');
+        if (secondCard) secondCard.classList.remove('flipped');
+        resetBoardState();
+      }, 900);
+    }
+
+    function resetBoardState() {
+      [firstCard, secondCard] = [null, null];
+      lockBoard = false;
+    }
+
+    function endGame() {
+      playFuturisticSound('win');
+      setRobotSpeech(`Luar biasa! Anda berjaya menyahbekukan sistem dalam masa ${timeElapsed} saat!`);
+
+      setTimeout(() => {
+        document.getElementById('game-screen').classList.add('hidden');
+        document.getElementById('end-screen').classList.remove('hidden');
+        document.getElementById('final-score-display').innerText = `${timeElapsed} SAAT`;
+
+        sendDataToGoogleSheets();
+      }, 600);
+    }
+
+    function resetToSetup() {
+      if (timerInterval) clearInterval(timerInterval);
+      document.getElementById('end-screen').classList.add('hidden');
+      document.getElementById('timeout-modal').classList.add('hidden');
+      document.getElementById('game-screen').classList.add('hidden');
+      document.getElementById('setup-screen').classList.remove('hidden');
+      setRobotSpeech("Salam Cyber RBT! Saya Robot Frost-5. Sila daftarkan Nama dan Kelas anda untuk memulakan cabaran kad memori!");
+    }
+
+    /* ==========================================================================
+       BLOK 7: INTEGRASI PENGHANTARAN DATA GOOGLE SHEETS
+       ========================================================================== */
+    function sendDataToGoogleSheets() {
+      const statusMsg = document.getElementById('status-msg');
+
+      if (!CONFIG.SCRIPT_URL || CONFIG.SCRIPT_URL.includes("MASUKKAN_URL")) {
+        statusMsg.innerText = "Status Skor: Dikemas kini di skrin (URL Web App Google Sheets belum dipautkan).";
+        return;
+      }
+
+      // Format Timestamps
+      const now = new Date();
+      const pad = (num) => String(num).padStart(2, '0');
+      const timestampFormatted = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+      const payload = {
+        NAMA: playerName,
+        KELAS: playerClass,
+        SKOR: `${timeElapsed}s (Baki ${timeRemaining}s)`,
+        Timestamps: timestampFormatted
+      };
+
+      statusMsg.innerText = "Menghantar rekod ke Google Sheets...";
+
+      fetch(CONFIG.SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        statusMsg.innerText = "✅ Rekod skor berjaya disimpan secara automatik dalam Google Sheets!";
+      })
+      .catch(err => {
+        statusMsg.innerText = "⚠️ Ralat sambungan semasa menyimpan skor.";
+        console.error(err);
+      });
+    }
+  </script>
+</body>
+</html>
