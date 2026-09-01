@@ -911,7 +911,7 @@
       CONFIG.PAIRS.forEach(pair => {
         deck.push({
           id: pair.id,
-          content: `<img src="${pair.img1}" class="card-img" alt="${pair.label}" onerror="this.onerror=null; this.parentElement.innerHTML='${pair.svg1}';"><span style="font-size:10px;color:#00d2ff;">${pair.img1}</span>`
+          content: `<img src="${pair.img1}" class="card-img" alt="${pair.label}" onerror="this.onerror=null; this.parentElement.innerHTML='${pair.svg1}';">`
         });
         deck.push({
           id: pair.id,
